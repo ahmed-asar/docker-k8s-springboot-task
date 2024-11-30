@@ -17,6 +17,10 @@ stages:
       - job: Lint
         steps:
           - script: |
+              ls -l /home/azureuser/myagent/_work/1/s/config/checkstyle/
+              cat /home/azureuser/myagent/_work/1/s/config/checkstyle/checkstyle.xml
+            displayName: "Verify Checkstyle Config File"
+          - script: |
               echo "Linting code..."
               chmod +x gradlew  # Ensure gradlew is executable on the agent
               ./gradlew checkstyleMain checkstyleTest
