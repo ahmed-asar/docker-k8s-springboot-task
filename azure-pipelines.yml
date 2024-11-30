@@ -2,7 +2,7 @@ trigger:
   - dev
 
 pool:
-  name: 'Default'
+  name: Default
   demands:
     - Agent.OS -equals Ubuntu
 
