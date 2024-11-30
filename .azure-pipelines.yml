@@ -1,0 +1,73 @@
+trigger:
+  - dev
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: spring-boot-app
+  registry: seahmedadel
+  projectKey: spring-boot-k8s-deployment_spring-boot-k8s-deployment_53566949-f2a3-4a9a-86fd-78431460c341
+  sonarHost: http://localhost:9000
+  sonarToken: 8hqC6RQ3sDTu8FOy0LMbIxeUMqML1JrZRSqjLi7VM0ndSgQFLGFhJQQJ99AKACAAAAAAAAAAAAASAZDOTBOa
+
+stages:
+  - stage: Lint
+    jobs:
+      - job: Lint
+        steps:
+          - script: |
+              echo "Linting code..."
+              ./gradlew checkstyleMain checkstyleTest
+            displayName: Lint Code
+
+  - stage: UnitTest
+    jobs:
+      - job: UnitTest
+        steps:
+          - script: |
+              echo "Running Unit Tests..."
+              ./gradlew test
+            displayName: Run Unit Tests
+
+  - stage: SonarQube
+    jobs:
+      - job: SonarQube
+        steps:
+          - task: SonarQubePrepare@5
+            inputs:
+              SonarQube: 'SonarQube-Local'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliOptions: |
+                -Dsonar.projectKey=$(projectKey)
+                -Dsonar.host.url=$(sonarHost)
+                -Dsonar.login=$(sonarToken)
+          - script: ./gradlew sonarqube
+            displayName: Run SonarQube Analysis
+
+  - stage: BuildImage
+    jobs:
+      - job: BuildImage
+        steps:
+          - script: |
+              docker build -t $(registry)/$(imageName):$(Build.BuildId) .
+            displayName: Build Docker Image
+
+  - stage: PushImage
+    jobs:
+      - job: PushImage
+        steps:
+          - script: |
+              docker push $(registry)/$(imageName):$(Build.BuildId)
+            displayName: Push Image to Registry
+
+  - stage: Deploy
+    jobs:
+      - job: Deploy
+        steps:
+          - script: |
+              kubectl apply -f deployment/deployment.yml
+              kubectl apply -f deployment/service.yml
+              kubectl apply -f deployment/ingress.yml
+            displayName: Deploy to Kubernetes
