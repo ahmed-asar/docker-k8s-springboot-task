@@ -30,6 +30,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+     checkstyle 'com.puppycrawl.tools:checkstyle:8.36.2' // Match this with the toolVersion
 }
 
 tasks.named('test') {
