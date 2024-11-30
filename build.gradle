@@ -9,6 +9,7 @@ plugins {
 checkstyle {
     toolVersion = '8.36.2' // Specify the version of Checkstyle
     configFile = file('config/checkstyle/checkstyle.xml') // Ensure this file exists
+    classpath = sourceSets.main.runtimeClasspath
 }
 
 tasks.withType(Checkstyle) {
