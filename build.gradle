@@ -1,21 +1,20 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.5'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id 'java'
-	id 'org.sonarqube' version "6.0.1.5171"
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'org.sonarqube' version "6.0.1.5171"
 }
 
-
 checkstyle {
-    toolVersion = '8.36.2' // Use the latest version of Checkstyle
-    configFile = rootProject.files('config/checkstyle/checkstyle.xml')
+    toolVersion = '8.36.2' // Use a compatible version of Checkstyle
+    configFile = file('config/checkstyle/checkstyle.xml') // Corrected to use file()
 }
 
 tasks.withType(Checkstyle) {
     reports {
-        xml.enabled = false
-        html.enabled = true
-        html.destination file("build/reports/checkstyle/main.html")
+        xml.required.set(false)
+        html.required.set(true)
+        html.outputLocation.set(file("$buildDir/reports/checkstyle/main.html"))
     }
 }
 
@@ -24,16 +23,16 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 sonarqube {
