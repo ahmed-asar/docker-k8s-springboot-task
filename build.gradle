@@ -5,6 +5,20 @@ plugins {
 	id 'org.sonarqube' version "6.0.1.5171"
 }
 
+
+checkstyle {
+    toolVersion = '8.36.2' // Use the latest version of Checkstyle
+    configFile = rootProject.files('config/checkstyle/checkstyle.xml')
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html.destination file("build/reports/checkstyle/main.html")
+    }
+}
+
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
