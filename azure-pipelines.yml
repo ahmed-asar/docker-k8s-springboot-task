@@ -9,7 +9,6 @@ variables:
   registry: seahmedadel
   projectKey: spring-boot-k8s-deployment_spring-boot-k8s-deployment_53566949-f2a3-4a9a-86fd-78431460c341
   sonarHost: http://localhost:9000
-  # It's recommended to use a secure token variable in Azure DevOps
   sonarToken: $(SONAR_TOKEN)  # Make sure to add SONAR_TOKEN as a secret variable in the pipeline's variables
 
 stages:
@@ -20,7 +19,7 @@ stages:
           - script: |
               echo "Linting code..."
               chmod +x gradlew  # Ensure gradlew is executable on the agent
-              ./gradlew checkstyleMain checkstyleTest
+              ./gradlew checkstyle
             displayName: Lint Code
             workingDirectory: $(Build.SourcesDirectory)  # Ensure the pipeline runs in the correct directory
 
