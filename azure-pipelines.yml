@@ -19,7 +19,7 @@ stages:
           - script: |
               echo "Linting code..."
               chmod +x gradlew  # Ensure gradlew is executable on the agent
-              ./gradlew checkstyle
+              ./gradlew checkstyleMain checkstyleTest
             displayName: Lint Code
             workingDirectory: $(Build.SourcesDirectory)  # Ensure the pipeline runs in the correct directory
 
