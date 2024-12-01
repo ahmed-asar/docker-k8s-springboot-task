@@ -90,13 +90,13 @@ stages:
 
 
   - stage: PullImage
-      jobs:
-        - job: PullImage
-          steps:
-            - script: |
-                echo "Pulling Docker Image from Registry..."
-                docker pull docker.io/seahmedadel/spring-boot-app:$(Build.BuildId)
-              displayName: 'Pull Image from Registry'
+    jobs:
+      - job: PullImage
+        steps:
+          - script: |
+              echo "Pulling Docker Image from Registry..."
+              docker pull docker.io/seahmedadel/spring-boot-app:$(Build.BuildId)
+            displayName: 'Pull Image from Registry'
 
   - stage: Deploy
     jobs:
