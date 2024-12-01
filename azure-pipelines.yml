@@ -81,7 +81,7 @@ stages:
 
           # Push the Docker image to the registry
           - script: |
-              docker push $(registry)/$(imageName):$(Build.BuildId)
+              docker push docker.io/seahmedadel/spring-boot-app:$(Build.BuildId)
             displayName: 'Push Image to Registry'
             workingDirectory: $(Build.SourcesDirectory)
 
