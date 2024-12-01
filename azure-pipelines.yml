@@ -47,6 +47,7 @@ stages:
               SonarQube: 'SonarQube'  # Make sure this matches your SonarQube connection in Azure DevOps
               scannerMode: 'CLI'
               configMode: 'manual'
+              cliProjectKey: $(projectKey)
               cliOptions: |
                 -Dsonar.projectKey=$(projectKey)
                 -Dsonar.host.url=$(sonarHost)
