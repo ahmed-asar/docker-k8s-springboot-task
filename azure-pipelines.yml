@@ -12,20 +12,23 @@ variables:
   sonarToken: $(SONAR_TOKEN)  # Make sure to add SONAR_TOKEN as a secret variable in the pipeline's variables
 
 stages:
-  # - stage: Lint
-  #   jobs:
-  #     - job: Lint
-  #       steps:
-  #         - script: |
-  #             ls -l /home/azureuser/myagent/_work/1/s/config/checkstyle/
-  #             cat /home/azureuser/myagent/_work/1/s/config/checkstyle/checkstyle.xml
-  #           displayName: "Verify Checkstyle Config File"
-  #         - script: |
-  #             echo "Linting code..."
-  #             chmod +x gradlew  # Ensure gradlew is executable on the agent
-  #             ./gradlew checkstyleMain checkstyleTest
-  #           displayName: Lint Code
-  #           workingDirectory: $(Build.SourcesDirectory)  # Ensure the pipeline runs in the correct directory
+  - stage: Lint
+    jobs:
+    - job: Lint
+      steps:
+        - script: |
+            echo "Listing files in the checkstyle directory..."
+            ls -l $(Build.SourcesDirectory)/config/checkstyle/
+            cat $(Build.SourcesDirectory)/config/checkstyle/checkstyle.xml
+          displayName: "Verify Checkstyle Config File"
+        - script: |
+            echo "Linting code..."
+            chmod +x gradlew  # Ensure gradlew is executable
+            ./gradlew checkstyleMain checkstyleTest
+          displayName: "Lint Code"
+          workingDirectory: $(Build.SourcesDirectory)  # Ensure the pipeline runs in the correct directory
+
+  
 
   - stage: UnitTest
     jobs:
