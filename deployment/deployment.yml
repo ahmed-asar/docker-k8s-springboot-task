@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: spring-boot-app
-        image: seahmedadel/spring-boot-app:latest
+        image: seahmedadel/spring-boot-app:$(Build.BuildId)
         ports:
         - containerPort: 8080
