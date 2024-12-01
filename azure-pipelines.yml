@@ -76,7 +76,7 @@ stages:
             displayName: 'Login to Docker Hub'
             inputs:
               containerRegistry: 'DOCKER_HUB'
-              username: $(DOCKER_USERNAME)
+              username: $(registry)
               password: $(DOCKER_PASSWORD)
 
           # Push the Docker image to the registry
