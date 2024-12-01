@@ -54,7 +54,7 @@ stages:
                 -Dsonar.login=$(sonarToken)
           - script: |
               chmod +x gradlew  # Ensure gradlew is executable on the agent
-              ./gradlew sonarqube
+              ./gradlew sonar
             displayName: Run SonarQube Analysis
             workingDirectory: $(Build.SourcesDirectory)
 
