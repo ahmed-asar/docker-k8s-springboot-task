@@ -4,7 +4,7 @@ metadata:
   name: spring-boot-ingress
 spec:
   rules:
-  - host: your-app.example.com
+  - host: 96.126.101.247
     http:
       paths:
       - path: /live
