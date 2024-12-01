@@ -89,9 +89,26 @@ stages:
     jobs:
       - job: Deploy
         steps:
+          # Download kubeconfig (replace this step if using secure storage)
+          - task: DownloadSecureFile@1
+            inputs:
+              secureFile: 'kubeconfig'
+            displayName: 'Download kubeconfig file'
+
+          # Configure kubeconfig for kubectl
+          - script: |
+              mkdir -p ~/.kube
+              mv $(Agent.TempDirectory)/kubeconfig ~/.kube/config
+            displayName: 'Configure kubeconfig'
+
+          # Test kubectl connectivity
+          - script: |
+              kubectl get nodes
+            displayName: 'Verify Kubernetes Authentication'
+
+          # Deploy Kubernetes manifests
           - script: |
               kubectl apply -f deployment/deployment.yml
               kubectl apply -f deployment/service.yml
               kubectl apply -f deployment/ingress.yml
-            displayName: Deploy to Kubernetes
-            workingDirectory: $(Build.SourcesDirectory)
+            displayName: 'Deploy to Kubernetes'
