@@ -8,7 +8,7 @@ variables:
   imageName: spring-boot-app
   registry: seahmedadel
   projectKey: spring-boot-k8s-deployment_spring-boot-k8s-deployment_53566949-f2a3-4a9a-86fd-78431460c341
-  sonarHost: http://localhost:9000
+  sonarHost: http://96.126.101.247:9000
   sonarToken: $(SONAR_TOKEN)  # Make sure to add SONAR_TOKEN as a secret variable in the pipeline's variables
 
 stages:
