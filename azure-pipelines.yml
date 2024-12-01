@@ -88,6 +88,16 @@ stages:
             displayName: 'Push Image to Registry'
             workingDirectory: $(Build.SourcesDirectory)
 
+
+  - stage: PullImage
+      jobs:
+        - job: PullImage
+          steps:
+            - script: |
+                echo "Pulling Docker Image from Registry..."
+                docker pull docker.io/seahmedadel/spring-boot-app:$(Build.BuildId)
+              displayName: 'Pull Image from Registry'
+
   - stage: Deploy
     jobs:
       - job: Deploy
