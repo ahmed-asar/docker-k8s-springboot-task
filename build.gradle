@@ -1,8 +1,22 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.5'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id 'java'
-	id 'org.sonarqube' version "4.4.0.2929"
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'org.sonarqube' version "6.0.1.5171"
+    id 'checkstyle' // Add the Checkstyle plugin explicitly
+}
+
+checkstyle {
+    toolVersion = '8.36.2' // Specify the version of Checkstyle
+    configFile = file('config/checkstyle/checkstyle.xml') // Ensure this file exists
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required.set(false)
+        html.required.set(true)
+        html.outputLocation.set(file("$buildDir/reports/checkstyle/main.html"))
+    }
 }
 
 group = 'com.example'
@@ -10,22 +24,26 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+     checkstyle 'com.puppycrawl.tools:checkstyle:8.36.2' // Match this with the toolVersion
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 sonarqube {
     properties {
         property "sonar.projectKey", "spring-boot-k8s-deployment_spring-boot-k8s-deployment_53566949-f2a3-4a9a-86fd-78431460c341"
-        property "sonar.host.url", "http://localhost:9000"
-        property "sonar.login", "8hqC6RQ3sDTu8FOy0LMbIxeUMqML1JrZRSqjLi7VM0ndSgQFLGFhJQQJ99AKACAAAAAAAAAAAAASAZDOTBOa"
+        property "sonar.host.url", "http://96.126.101.247:9000"
+        property "sonar.token", "squ_3152bf6b91c2241f7db87ca40022cc2ad755c38a"
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java"
+        property "sonar.exclusions", "**/DemoApplicationTests.java"
     }
 }

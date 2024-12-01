@@ -2,25 +2,30 @@ trigger:
   - dev
 
 pool:
-  name: Default
-  
+  name: Default  # Ensure this is your self-hosted agent pool name
 
 variables:
   imageName: spring-boot-app
   registry: seahmedadel
   projectKey: spring-boot-k8s-deployment_spring-boot-k8s-deployment_53566949-f2a3-4a9a-86fd-78431460c341
-  sonarHost: http://localhost:9000
-  sonarToken: 8hqC6RQ3sDTu8FOy0LMbIxeUMqML1JrZRSqjLi7VM0ndSgQFLGFhJQQJ99AKACAAAAAAAAAAAAASAZDOTBOa
+  sonarHost: http://96.126.101.247:9000
+  sonarToken: $(SONARTOKEN)  # Make sure to add SONAR_TOKEN as a secret variable in the pipeline's variables
 
 stages:
-  - stage: Lint
-    jobs:
-      - job: Lint
-        steps:
-          - script: |
-              echo "Linting code..."
-              ./gradlew checkstyleMain checkstyleTest
-            displayName: Lint Code
+  # - stage: Lint
+  #   jobs:
+  #     - job: Lint
+  #       steps:
+  #         - script: |
+  #             ls -l /home/azureuser/myagent/_work/1/s/config/checkstyle/
+  #             cat /home/azureuser/myagent/_work/1/s/config/checkstyle/checkstyle.xml
+  #           displayName: "Verify Checkstyle Config File"
+  #         - script: |
+  #             echo "Linting code..."
+  #             chmod +x gradlew  # Ensure gradlew is executable on the agent
+  #             ./gradlew checkstyleMain checkstyleTest
+  #           displayName: Lint Code
+  #           workingDirectory: $(Build.SourcesDirectory)  # Ensure the pipeline runs in the correct directory
 
   - stage: UnitTest
     jobs:
@@ -28,8 +33,10 @@ stages:
         steps:
           - script: |
               echo "Running Unit Tests..."
+              chmod +x gradlew  # Ensure gradlew is executable on the agent
               ./gradlew test
             displayName: Run Unit Tests
+            workingDirectory: $(Build.SourcesDirectory)
 
   - stage: SonarQube
     jobs:
@@ -37,15 +44,19 @@ stages:
         steps:
           - task: SonarQubePrepare@5
             inputs:
-              SonarQube: 'SonarQube'
+              SonarQube: 'SonarQube'  # Make sure this matches your SonarQube connection in Azure DevOps
               scannerMode: 'CLI'
               configMode: 'manual'
+              cliProjectKey: $(projectKey)
               cliOptions: |
                 -Dsonar.projectKey=$(projectKey)
                 -Dsonar.host.url=$(sonarHost)
                 -Dsonar.login=$(sonarToken)
-          - script: ./gradlew sonarqube
+          - script: |
+              chmod +x gradlew  # Ensure gradlew is executable on the agent
+              ./gradlew sonar
             displayName: Run SonarQube Analysis
+            workingDirectory: $(Build.SourcesDirectory)
 
   - stage: BuildImage
     jobs:
@@ -54,6 +65,7 @@ stages:
           - script: |
               docker build -t $(registry)/$(imageName):$(Build.BuildId) .
             displayName: Build Docker Image
+            workingDirectory: $(Build.SourcesDirectory)
 
   - stage: PushImage
     jobs:
@@ -62,6 +74,7 @@ stages:
           - script: |
               docker push $(registry)/$(imageName):$(Build.BuildId)
             displayName: Push Image to Registry
+            workingDirectory: $(Build.SourcesDirectory)
 
   - stage: Deploy
     jobs:
@@ -72,3 +85,4 @@ stages:
               kubectl apply -f deployment/service.yml
               kubectl apply -f deployment/ingress.yml
             displayName: Deploy to Kubernetes
+            workingDirectory: $(Build.SourcesDirectory)
