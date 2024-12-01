@@ -41,6 +41,6 @@ sonarqube {
     properties {
         property "sonar.projectKey", "spring-boot-k8s-deployment_spring-boot-k8s-deployment_53566949-f2a3-4a9a-86fd-78431460c341"
         property "sonar.host.url", "http://96.126.101.247:9000"
-        property "sonar.login", "8hqC6RQ3sDTu8FOy0LMbIxeUMqML1JrZRSqjLi7VM0ndSgQFLGFhJQQJ99AKACAAAAAAAAAAAAASAZDOTBOa"
+        property "sonar.login", "squ_3152bf6b91c2241f7db87ca40022cc2ad755c38a"
     }
 }
