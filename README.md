@@ -1,4 +1,3 @@
-
 # Hiring Task - Junior DevOps Engineer
 
 ## 1. Overview
