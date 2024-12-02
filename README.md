@@ -117,7 +117,24 @@ ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 
 ---
 
-## 6. Conclusion
-The pipeline efficiently integrates source code linting, testing, quality analysis, containerization, and automated deployment. Utilizing Azure DevOps for CI/CD ensures seamless versioning and environment-specific deployments. Kubernetes provides a robust platform for scaling and managing the application, while Docker simplifies dependency management and portability.
+Here’s how you can structure the Challenges and Solutions section with both challenges and their proposed solutions:
 
-This task highlights my ability to set up and automate a full development lifecycle, demonstrating essential skills required for a Junior DevOps Engineer role.
+## 6. Challenges and Solutions
+- **Challenge 1**:Insufficient Resources for Separate Development and Production Environments
+Due to the limited resources available, I was unable to create fully isolated development and production environments. As a result, I had to create a single pipeline with separate stages for dev and prod deployments. Initially, both the dev and prod Kubernetes manifests had identical values. This setup worked for the time being, but it was not an ideal solution for proper environment separation.
+
+- **Solution**:
+To address this challenge, I opted to keep the dev and prod stages within the same pipeline for simplicity. However, the solution to fully isolate the environments is to set up a separate Kubernetes cluster for the prod environment. The prod Kubernetes manifest values will then be adjusted accordingly, ensuring that the production deployment is isolated and configured with optimal settings (e.g., scaling, resource allocation). This approach will ensure that the dev and prod environments are properly separated, enabling better scalability, security, and resource management.
+
+- **Challenge 2**: SonarQube Analysis Failing Due to License Limitation
+While running the SonarQube analysis in the CI/CD pipeline, I encountered an error that halted the build process. The error message indicated that "To use the property sonar.branch.name and analyze branches, Developer Edition or above is required." This was due to the SonarQube instance in use being a version that does not support branch analysis.
+
+- **Solution**:
+To resolve this issue, I identified that the current SonarQube version was insufficient for analyzing different branches. The solution is to either upgrade to the Developer Edition of SonarQube or modify the pipeline to avoid using features that require this version. If upgrading to the Developer Edition is not feasible, an alternative solution could be to configure SonarQube to run analysis on the default branch or refactor the pipeline to handle branch analysis differently, possibly by using workarounds like manual triggering or separate analysis tasks.
+
+---
+
+## 7. Conclusion
+The pipeline efficiently integrates key stages such as source code linting, testing, quality analysis, containerization, and automated deployment. By leveraging Azure DevOps for CI/CD, it ensures seamless versioning and environment-specific deployments, while Kubernetes provides a robust platform for scaling and managing the application. Docker simplifies dependency management and portability, making the application easy to deploy across different environments.
+
+This task demonstrates my ability to set up and automate a full development lifecycle, including handling challenges related to resource limitations and tool versioning. It showcases my skills in implementing CI/CD pipelines, containerization, and deployment on Kubernetes—essential capabilities for a Junior DevOps Engineer role. Through this project, I’ve further honed my problem-solving skills, adaptability, and ability to implement efficient, automated processes in real-world scenarios.
