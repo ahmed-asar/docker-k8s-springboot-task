@@ -58,7 +58,10 @@ stages:
                 -Dsonar.projectKey=$(projectKey)
                 -Dsonar.host.url=$(sonarHost)
                 -Dsonar.login=$(sonarToken)
+                -Dsonar.branch.name=
           - script: |
+              unset BUILD_SOURCEBRANCH
+              unset BUILD_SOURCEBRANCHNAME
               chmod +x gradlew  # Ensure gradlew is executable on the agent
               ./gradlew sonar
             displayName: Run SonarQube Analysis
