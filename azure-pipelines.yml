@@ -101,7 +101,6 @@ stages:
               docker pull docker.io/seahmedadel/spring-boot-app:latest
             displayName: 'Pull Image from Registry'
 
-  stages:
   # Deploy to Development Stage
   - stage: DeployDev
     displayName: 'Deploy to Development Environment'
