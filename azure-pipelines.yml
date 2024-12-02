@@ -1,5 +1,8 @@
 trigger:
-  - dev
+  branches:
+    include:
+      - dev
+      - master
 
 pool:
   name: Default  # Ensure this is your self-hosted agent pool name
@@ -98,30 +101,49 @@ stages:
               docker pull docker.io/seahmedadel/spring-boot-app:latest
             displayName: 'Pull Image from Registry'
 
-  - stage: Deploy
+  stages:
+  # Deploy to Development Stage
+  - stage: DeployDev
+    displayName: 'Deploy to Development Environment'
+    condition: eq(variables['Build.SourceBranchName'], 'dev')
     jobs:
-      - job: Deploy
+      - job: DeployDev
         steps:
-          # Download kubeconfig (replace this step if using secure storage)
           - task: DownloadSecureFile@1
             inputs:
               secureFile: 'kubeconfig'
             displayName: 'Download kubeconfig file'
-
-          # Configure kubeconfig for kubectl
+          
           - script: |
               mkdir -p ~/.kube
               mv $(Agent.TempDirectory)/kubeconfig ~/.kube/config
             displayName: 'Configure kubeconfig'
 
-          # Test kubectl connectivity
           - script: |
-              kubectl get nodes
-            displayName: 'Verify Kubernetes Authentication'
+              kubectl apply -f deployment/dev/deployment.yml
+              kubectl apply -f deployment/dev/service.yml
+              kubectl apply -f deployment/dev/ingress.yml
+            displayName: 'Deploy to Kubernetes Development Environment'
 
-          # Deploy Kubernetes manifests
+  # Deploy to Production Stage
+  - stage: DeployProd
+    displayName: 'Deploy to Production Environment'
+    condition: eq(variables['Build.SourceBranchName'], 'master')
+    jobs:
+      - job: DeployProd
+        steps:
+          - task: DownloadSecureFile@1
+            inputs:
+              secureFile: 'kubeconfig'
+            displayName: 'Download kubeconfig file'
+
           - script: |
-              kubectl apply -f deployment/deployment.yml
-              kubectl apply -f deployment/service.yml
-              kubectl apply -f deployment/ingress.yml
-            displayName: 'Deploy to Kubernetes'
+              mkdir -p ~/.kube
+              mv $(Agent.TempDirectory)/kubeconfig ~/.kube/config
+            displayName: 'Configure kubeconfig'
+
+          - script: |
+              kubectl apply -f deployment/prod/deployment.yml
+              kubectl apply -f deployment/prod/service.yml
+              kubectl apply -f deployment/prod/ingress.yml
+            displayName: 'Deploy to Kubernetes Production Environment'
