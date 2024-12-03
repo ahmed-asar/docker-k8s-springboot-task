@@ -6,6 +6,11 @@ NOTE: Here is the [UPDATED Pull Request](https://dev.azure.com/seahmedadel/sprin
 ## 1. Overview
 This task serves as a practical assessment for a **Junior DevOps Engineer** vacancy. The goal is to demonstrate my proficiency in coding, testing, automation, deployment, and documentation skills.
 
+![CI/CD Pipeline for Spring Boot Application with Kubernetes Deployment](CICD%20Pipeline%20for%20Spring%20Boot%20Application%20with%20Kubernetes%20Deployment.png)
+
+
+The diagram above illustrates the flow of development and production environments. 
+
 ### Tools and Technologies Used:
 - **Gradle**: To build the JAR file for the Spring Boot application.
 - **Docker**: To containerize the Spring Boot application.
