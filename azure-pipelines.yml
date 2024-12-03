@@ -1,6 +1,8 @@
 trigger:
+  branches:
+    include:
       - dev
-      # - master
+      - main
 
 pool:
   name: Default
@@ -123,24 +125,24 @@ stages:
             displayName: 'Deploy to Kubernetes Development Environment'
 
   # Deploy to Production Stage
-  # - stage: DeployProd
-  #   displayName: 'Deploy to Production Environment'
-  #   condition: eq(variables['Build.SourceBranchName'], 'master')
-  #   jobs:
-  #     - job: DeployProd
-  #       steps:
-  #         - task: DownloadSecureFile@1
-  #           inputs:
-  #             secureFile: 'kubeconfig'
-  #           displayName: 'Download kubeconfig file'
+  - stage: DeployProd
+    displayName: 'Deploy to Production Environment'
+    condition: eq(variables['Build.SourceBranchName'], 'master')
+    jobs:
+      - job: DeployProd
+        steps:
+          - task: DownloadSecureFile@1
+            inputs:
+              secureFile: 'kubeconfig'
+            displayName: 'Download kubeconfig file'
 
-  #         - script: |
-  #             mkdir -p ~/.kube
-  #             mv $(Agent.TempDirectory)/kubeconfig ~/.kube/config
-  #           displayName: 'Configure kubeconfig'
+          - script: |
+              mkdir -p ~/.kube
+              mv $(Agent.TempDirectory)/kubeconfig ~/.kube/config
+            displayName: 'Configure kubeconfig'
 
-  #         - script: |
-  #             kubectl apply -f deployment/prod/deployment.yml
-  #             kubectl apply -f deployment/prod/service.yml
-  #             kubectl apply -f deployment/prod/ingress.yml
-  #           displayName: 'Deploy to Kubernetes Production Environment'
+          - script: |
+              kubectl apply -f deployment/prod/deployment.yml
+              kubectl apply -f deployment/prod/service.yml
+              kubectl apply -f deployment/prod/ingress.yml
+            displayName: 'Deploy to Kubernetes Production Environment'
