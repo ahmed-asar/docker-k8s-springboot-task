@@ -1,8 +1,3 @@
-# Hiring Task - Junior DevOps Engineer
-
-NOTE: Here is the [UPDATED Pull Request](https://dev.azure.com/seahmedadel/spring-boot-k8s-deployment/_git/spring-boot-k8s-deployment/pullrequest/6)
-
-
 ## 1. Overview
 This task serves as a practical assessment for a **Junior DevOps Engineer** vacancy. The goal is to demonstrate my proficiency in coding, testing, automation, deployment, and documentation skills.
 
