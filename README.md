@@ -1,3 +1,13 @@
+# spring-boot-k8s-deployment
+
+This repository was originally hosted on Azure DevOps and has been shared here on GitHub for demonstration purposes. 
+
+All original work and CI/CD configurations were implemented and tested using Azure DevOps.
+
+*Original repository URL:* [Azure DevOps Repo](https://dev.azure.com/seahmedadel/_git/spring-boot-k8s-deployment)
+---
+
+
 ## 1. Overview
 This task serves as a practical assessment for a **Junior DevOps Engineer** vacancy. The goal is to demonstrate my proficiency in coding, testing, automation, deployment, and documentation skills.
 
